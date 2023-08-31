@@ -1,0 +1,50 @@
+public class Lesson_28_08_2023 {
+    public static void main(String[] args) {
+        int[] arr = {22, 8, -19, 3, 1, 6, -9};
+
+        int arithmeticPositiv = calculPositivElements(arr);
+        System.out.println("средний положительный элемент = " + arithmeticPositiv);
+
+        int sumDivisblElement3not5 = calculSumDivisblElement3not5(arr);
+        System.out.println("элементы делищиеся на 3 и не делищиеся на 5 = " +  sumDivisblElement3not5);
+
+        int maxSumElement = calculMaxSumElement(arr);
+        System.out.println("наибольшая сумма элементов = " + calculMaxSumElement(arr));
+    }
+
+    public static int calculPositivElements(int[] arr) {
+        int positivSum = 0;
+        int positivCount = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > 0) {
+                positivSum += arr[i];
+                positivCount++;
+            }
+        }
+        if (positivCount > 0) {
+            return positivSum / positivCount;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int calculSumDivisblElement3not5(int[] arr) {
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 3 == 0 && arr[i] % 5 != 0) {
+                sum += arr[i];
+            }
+        }
+        return sum;
+    }
+
+    public static int calculMaxSumElement(int[] arr) {
+        int maxSum = arr[0];
+        int actualSum = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            actualSum = Math.max(maxSum, actualSum);
+        }
+        return maxSum;
+    }
+}

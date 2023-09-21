@@ -1,0 +1,23 @@
+public static void main(String[] args) {
+        int[] arr = {11, 11, 32, 32, 55, 55, 27, 27, 13, 13, 17, 17, 100};
+        int element = singleElement(arr);
+        System.out.println("Single Element - " + element);
+    }
+
+    public static int singleElement(int[] arr) {
+        int starting = 0;
+        int ending = arr.length -1;
+        while (starting < ending) {
+            int mean = starting + (ending - starting) / 2;
+            if (mean % 2 == 1) {
+                mean--;
+            }
+            if (arr[mean] != arr[mean + 1]) {
+                ending = mean;
+            } else  {
+                starting = mean + 2;
+            }
+        }
+       return arr[starting];
+    }
+}

@@ -1,0 +1,61 @@
+package org.example.Online_Biblioteka;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class Main {
+    public static void main(String[] args) {
+        List<Book> books = new ArrayList<>();
+        books.add(new Book(1, "Книга 1", "Автор 1", "Детектив", 2000, true));
+        books.add(new Book(2, "Книга 2", "Автор 2", "Фантастика", 1995, true));
+        books.add(new Book(3, "Книга 3", "Автор 3", "Роман", 2010, false));
+        books.add(new Book(4, "Книга 4", "Автор 4", "Детектив", 2015, true));
+        books.add(new Book(5, "Книга 5", "Автор 5", "Драма", 2023, true));
+
+        List<LibraryUser> users = new ArrayList<>();
+        users.add(new LibraryUser(101, "Пользователь 1", "user1@gmail.com", "1234567890"));
+        users.add(new LibraryUser(102, "Пользователь 2", "user2@mail.ru", "9876543210"));
+        users.add(new LibraryUser(103, "Пользователь 3", "user3@yandex.ru", "45326755"));
+        users.add(new LibraryUser(104, "Пользователь 4", "user4@de.com", "13469834367"));
+        users.add(new LibraryUser(105, "Пользователь 5", "user5@gmail.com", "235326236"));
+
+
+        LibraryManager libraryManager = new LibraryManager(books, users);
+
+
+        libraryManager.addBooToLibrary(new Book(6, "Книга 6", "Автор 6", "Драма", 2023, true));
+        libraryManager.removeBookFromLibrary(new Book(2, "Книга 2", "Автор 2", "Фантастика", 1995, true));
+
+        // выводим список доступных книг заданного жанра
+        List<Book> availableBooks = libraryManager.listAvailableBookByGenre("Детектив");
+        System.out.println("Доступные книги в жанре 'Детектив':");
+        for (Book book : availableBooks) {
+            System.out.println(book.getBookTitle());
+        }
+
+        // список адресов электронной почты пользователей зарезервировавших книги
+        libraryManager.reserveBook(users.get(1), books.get(1));
+        Set<String> userEmails = libraryManager.listUserEmailsWithReservedBooks();
+        System.out.println("Адреса электронной почты пользователей, зарезервировавших книги:");
+        for (String email : userEmails) {
+            System.out.println(email);
+        }
+
+        // берем книгу в аренду
+        libraryManager.borrowBook(users.get(0), books.get(0));
+        
+
+        // список книг которые взяты пользователями в аренду
+        System.out.println("Книги, взятые пользователем в аренду:");
+        for (Book book : users.get(0).getUserBookBorrowed()) {
+            System.out.println(book.getBookTitle());
+        }
+
+        // список зарезервированных книг пользователями
+        System.out.println("Зарезервированные книги пользователя 2:");
+        for (Book book : users.get(1).getUserBookReserved()) {
+            System.out.println(book.getBookTitle());
+        }
+    }
+}

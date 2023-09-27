@@ -1,0 +1,80 @@
+package org.example.Online_Biblioteka;
+
+import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@AllArgsConstructor
+public class LibraryManager {
+    private List<Book> libraryCatalog;
+    private List<LibraryUser> libraryUsers;
+
+
+    // Метод который возвращает список доступных книг заданного жанра.
+    public List<Book> listAvailableBookByGenre(String genre) {
+        List<Book> availableBooksGenre = new ArrayList<>();
+        for (Book book : libraryCatalog) {
+            if (book.getBookGenre().equalsIgnoreCase(genre) && book.isBookAvailable()) {
+                availableBooksGenre.add(book);
+            }
+        }
+        return availableBooksGenre;
+    }
+
+
+    //Метод который возвращает множество адресов электронной почты пользователей, зарезервировавших книги.
+    public Set<String> listUserEmailsWithReservedBooks() {
+        Set<String> userEmails = new HashSet<>();
+        for (LibraryUser user : libraryUsers) {
+            Set<Book> reservedBooks = user.getUserBookReserved();
+            if (reservedBooks != null && !reservedBooks.isEmpty()) {
+                userEmails.add(user.getUserEmail());
+            }
+        }
+        return userEmails;
+}
+
+    public void addBooToLibrary(Book book) {
+        if (!libraryCatalog.contains(book)) {
+            libraryCatalog.add(book);
+            System.out.println("Книга успешно добавлена!");
+        } else {
+            System.out.println("Книга с таким идентификатором уже существует в библиотеке.");
+        }
+    }
+    public void removeBookFromLibrary(Book book) {
+        if (libraryCatalog.contains(book)) {
+            libraryCatalog.remove(book);
+            System.out.println("Книга успешно удалена из библиотеки!");
+        } else {
+            System.out.println("Книга не найдена в библиотеке!");
+        }
+    }
+    public void borrowBook(LibraryUser user, Book book) {
+        if (libraryCatalog.contains(book) && book.isBookAvailable()) {
+            book.setBookAvailable(false);
+            user.getUserBookBorrowed().add(book);
+            System.out.println("Книга успешно взята в аренду!");
+        } else if (!libraryCatalog.contains(book)) {
+            System.out.println("Книга не найдена!");
+        } else {
+            System.out.println("Простите, книга уже взята другим пользователем!");
+        }
+    }
+    public void reserveBook (LibraryUser user, Book book) {
+        if (!libraryCatalog.contains(book)) {
+            System.out.println("Книга не найдена!");
+        } else if (!book.isBookAvailable()) {
+            System.out.println("Книга в анренде другим пользоватлем!");
+        }else {
+            user.reserveBook(book);
+            book.setBookAvailable(false);
+            System.out.println("Книга успешно зарезервирована!");
+        }
+    }
+}
+
+
